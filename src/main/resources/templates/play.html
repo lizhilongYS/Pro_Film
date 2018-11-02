@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="pixel-ratio-2 retina android android-6 android-6-0" data-ng-app="materialAdmin" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link th:href="@{/css/WeUI/weui.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/mui/mui.min.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/WeUI/weui2.min.css}">
+    <link rel="stylesheet" th:href="@{/css/WeUI/jquery-weui.css}">
+    <link rel="stylesheet" th:href="@{/css/WeUI/demos.css}">
+
+    <style>
+        body {
+            font-family: 'Microsoft YaHei';
+
+        }
+        .a {
+            text-decoration: none;
+        }
+        p {
+            font-size: 4.5vw;
+        }
+        .title {
+            margin: 20px 15px 7px;
+            color: #6d6d72;
+            font-size: 15px;
+        }
+        .active{
+            /*color:#20b40f;*/
+
+        }
+        li,p{
+            font-size:4vw;
+
+        }
+        #p{
+            font-weight: bold;
+        }
+        #tab2,#tab1{
+
+            background-color: white;
+        }
+        #move{
+
+            width: 100%;
+            margin:0px auto;
+            position:fixed;/*固定作用*/
+
+
+            /*ie6下样式，加下划线表示只针对ie6 的hack */
+            _position:absolute;/* 把视频位置定义为绝对位置  关键*/
+            _top:expression(documentElement.scrollTop + "px"); /* 把视频位置放在浏览器垂直滚动条的顶端  关键 */
+            z-index:9999; /* 让视频浮在网页的高层位置，遇到flash和图片时候v 也能始终保持最外层 */
+            background-color: white;
+
+        }
+        #tab2Text{
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        #tab{
+            margin:240px auto;
+            position:fixed;/*固定作用*/
+
+            align-content: left;
+            float: left;
+            /*ie6下样式，加下划线表示只针对ie6 的hack */
+            _position:absolute;/* 把div位置定义为绝对位置  关键*/
+            _top:expression(documentElement.scrollTop + "px"); /* 把div位置放在浏览器垂直滚动条的顶端  关键 */
+            z-index:9999; /* 让div浮在网页的高层位置，遇到flash和图片时候v 也能始终保持最外层 */
+            background-color: white;
+        }
+
+
+    </style>
+    <script type="text/javascript">
+
+        var ta1=1;
+        var ta2=1;
+
+
+      $(function () {
+
+          $("#tab2Text").html($("#tab2Text").attr("lang"));
+
+
+
+          $(".a").click(function () {
+               var url = $(this).attr("lang").split("+&+")[0];
+               var name = "您正在观看:  ";
+               name += $(this).attr("name");
+               var content = $(this).attr("lang").split("+&+")[1];
+
+              $(".a").css("color","#20b40f");
+              $(this).css("color","#891126");
+              $("#video").attr("src",url);
+              $("#p").html(name);
+              $("#tab2Text").html(content);
+
+          });
+          $("#ta1").click(function () {
+              if (ta1==0){
+                  $("#ta1").attr("href","#top");
+              } else if (ta1==1){
+                  $("#ta1").attr("href","#tab1");
+              }
+              ta2=1;
+              ta1=0;
+          });
+          $("#ta2").click(function () {
+
+              if (ta2==0){
+                  $("#ta2").attr("href","#top");
+              }else if (ta2==1){
+                  $("#ta2").attr("href","#tab2");
+              }
+
+              ta2=0;
+              ta1=1;
+          });
+
+          // function ta1() {
+          //     $("#ta1").attr("href","#top");
+          // }
+          // function ta2() {
+          //     $("#ta2").attr("href","#top");
+          // }
+
+      })
+        //
+        // if (ta1==0){
+        //     $("#ta1").attr("href","#top");
+        // } else if (ta1==1){
+        //     $("#ta1").attr("href","#tab2");
+        // }
+        //
+        // if (ta2==0){
+        //     $("#ta2").attr("href","#top");
+        // }else if (ta2==1){
+        //     $("#ta2").attr("href","#tab1");
+        // }
+
+        //
+        // function setSrc() {
+        //
+        //     var  url = $(this).lang;
+        //     $("#video").attr("src",url);
+        //
+        // }
+
+    </script>
+
+    <title>课程列表</title>
+
+</head>
+<body ontouchstart="">
+
+
+<div id="fill" style="height: 230px;width: 100%;">
+<div id="move">
+    <!--<iframe th:src="${list1[0].url}" frameborder="0"></iframe>-->
+    <a name="tab1"> </a>
+    <video id="video" style="width:100%;height: 200px; " th:src="${list1[0].url}" controls="controls" th:poster="@{/filmImages/}+${list1[0].imageName}"  ></video>
+    <p id="p" th:text="'您正在观看:  '+${list1[0].name}"></p><br/><br>
+
+</div>
+</div>
+
+
+
+
+      <div class="mui-content"  >
+          <div class="weui-tab"  >
+
+
+                  <div class="weui-navbar" id="tab" >
+                      <a class="weui-navbar__item " id="ta1" href="#tab1" >
+                          <!--<div class="title">-->
+
+                          <!--</div>-->
+                          课程列表
+                      </a>
+                      <a class="weui-navbar__item" id="ta2" href="#tab2">
+                          课程笔记
+                      </a>
+
+                  </div>
+
+
+
+    <div style="height: 580px; overflow-y: auto;padding-top: 60px;" >
+              <div class="weui-tab__bd">
+                  <a href="#top">
+                      <div id="tab1" name="t1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                          <ul class="mui-table-view">
+                              <a th:each="film:${list1}" class="a" th:lang="${film.url}+'+&+'+${film.content}" th:name="${film.name}"  href="#top">  <li  class="mui-table-view-cell active" th:text="${film.name}" style="color: #20b40f;" </li>
+
+                              </a>
+
+                          </ul>
+
+                      </div>
+                  </a>
+                  <div id="tab2" name="t2" class="weui-tab__bd-item">
+                      <a href="#top">
+                          <div id="tab2Text" th:lang="${list1[0].content}"></div>
+                      </a>
+                  </div>
+
+              </div>
+          </div>
+          </div>
+      </div>
+
+
+
+
+
+        <script th:src="@{/css/WeUI/fastclick.js}"></script>
+
+   <script>
+        $(function() {
+        FastClick.attach(document.body);
+        });
+        // </script>
+        <script th:src="@{/css/WeUI/jquery-weui.js}"></script>
+
+        <script>
+            $("#a").select({
+                title: "选择职业",
+                items: ["法官", "医生", "猎人", "学生", "记者", "其他"]
+            });
+        </script>
+
+
+        <script type='text/javascript'>
+            (function(m, ei, q, i, a, j, s) {
+                m[i] = m[i] || function() {
+                    (m[i].a = m[i].a || []).push(arguments)
+                };
+                j = ei.createElement(q),
+                    s = ei.getElementsByTagName(q)[0];
+                j.async = true;
+                j.charset = 'UTF-8';
+                j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+                s.parentNode.insertBefore(j, s);
+            })(window, document, 'script', '_MEIQIA');
+            _MEIQIA('entId', 119837);
+        </script>
+    </body>
+    </html>

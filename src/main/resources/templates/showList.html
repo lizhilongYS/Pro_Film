@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>更多</title>
+<meta name="description" content="IT精英汇">
+<meta name="keywords" content="IT精英汇">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<!-- head 中 -->
+<link th:href="@{/morepagejs/weui.min.css}" rel="stylesheet" >
+<link th:href="@{/morepagejs/jquery-weui_1.0.1_css_jquery-weui.min.css}"rel="stylesheet" >
+<link th:href="@{/morepagejs/jquery.mmenu.all.css}" rel="stylesheet">
+<link  th:href="@{/morepagejs/common.css}"rel="stylesheet">
+
+<!-- body 最后 -->
+<script th:src="@{/morepagejs/hm.js}"></script>  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+<script th:src="@{/morepagejs/jquery-weui_1.0.1_js_jquery-weui.min.js}"></script>
+
+<!-- 如果使用了某些拓展插件还需要额外的JS -->
+<script th:src="@{/morepagejs/jquery-weui_1.0.1_js_swiper.min.js}"></script>
+<script th:src="@{/morepagejs/jquery-weuipicker.min.js}"></script>
+
+<script th:src="@{/morepagejs/jquery.lazyload.min.js}"></script>
+<script th:src="@{/morepagejs/jquery.goup.min.js}"></script>
+<script th:src="@{/morepagejs/jquery.mmenu.all.min.js}"></script>
+<script type="text/javascript">
+    $(function() {
+
+
+            $(".weui-media-box_appmsg").click(function () {
+                var url = $(this).attr("lang");
+
+
+
+                location.href="http://xinqushi.net/vipvideo/film/getList/"+url;
+
+            });
+
+
+
+        $(document).ready(function () {
+            $.goup({
+                trigger: 100,
+                bottomOffset: 50,
+                locationOffset: parseInt(($(window).width() - 100) / 2),
+                title: '',
+                titleAsText: false,
+                hideUnderWidth: 100,
+                containerColor: "#09bb07"
+            });
+        });
+    })
+</script>
+<script>
+    // var _hmt = _hmt || [];
+    // (function() {
+    //     var hm = document.createElement("script");
+    //     hm.src = "https://hm.baidu.com/hm.js?d0607ae78cb23d45522f94cb42780f69";
+    //     var s = document.getElementsByTagName("script")[0];
+    //     s.parentNode.insertBefore(hm, s);
+    // })();
+    //
+    //
+    // $(function(){
+    // });
+</script>
+
+</head>
+<body class="">
+
+<div id="mm-0" class="mm-page mm-slideout">
+
+            <div class="demos-header" style="background:url('http://tp.xinqushi.net/01.png');width: 100%;height: 100%; #eee center center;background-size: cover;">
+                <h1 class="demos-title" style="color:#fff;text-shadow: 2px 1px 2px #333;">课程列表</h1>
+            </div>
+
+    <div class="weui-panel weui-panel_access" style="margin-top: 0px;">
+
+        <div class="weui-panel__bd" th:each="videoCat:${list}">
+            <a href="javascript:;" class="weui-media-box weui-media-box_appmsg" th:lang="${videoCat.id}">
+                <div class="weui-media-box__hd" >
+                    <img class="weui-media-box__thumb" width="70px" height="70px" th:src="@{'http://47.95.221.13:8080/vipvideo/catImages/'+${videoCat.imageName}}">
+                </div>
+                <div class="weui-media-box__bd">
+                    <h4 class="weui-media-box__title"><span th:text="${videoCat.name}"></span></h4>
+                    <p class="weui-media-box__desc" ><span th:text="${videoCat.catDesc}"></span></p>
+                    <p class="weui-media-box__desc price_desc"></p>
+                </div>
+            </a>
+
+
+
+        </div>
+
+
+
+        <!--<div class="weui-loadmore">-->
+            <!--<i class="weui-loading"></i>-->
+            <!--<span class="weui-loadmore__tips">正在加载</span>-->
+        <!--</div>-->
+    </div>
+</div>
+
+
+
+
+<script>
+    var p=2;
+    var loading = false;  //状态标记
+    $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+        $.getJSON("?_suXCA=index/index_more&p="+p,function(result){
+            loading = false;
+            $('.weui-panel__bd').append(result.data);
+            p++;
+            if(result.nextpage==0){
+                $(document.body).destroyInfinite();
+                $('.weui-loadmore').remove();
+            }
+        });
+    });
+</script>
+
+
+<div id="mm-blocker" class="mm-slideout"></div><div style="display: none; position: fixed; width: 100px; height: 40px; z-index: 1000; background: rgb(9, 187, 7); cursor: pointer; bottom: 50px; right: 406px; border-radius: 10px;" class="goup-container" title=""><div class="goup-arrow" style="width: 0px; height: 0px; margin: 0px auto; padding-top: 13px; border-style: solid; border-width: 0px 10px 10px; border-color: transparent transparent rgb(255, 255, 255);"></div></div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="login-content" data-ng-app="materialAdmin" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>视频信息添加页面</title>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.min.js"></script>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.easyui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/icon.css" />
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+
+
+        $(function(){
+
+
+			//获取视频分类
+            $.ajax({
+				url:"/admin/cat/show",
+				success:function (data) {
+					var html="";
+                    $.each(data , function (i, o){
+						html+="<input type='radio' name='catId' value='"+o["id"]+"'><span>"+o["name"]+"</span><br>";
+
+                    });
+                    $("#op").append(html);
+
+                    javascript:catList();
+                }
+
+			})
+
+
+
+
+        });
+
+        //显示下拉选择列表框
+        function catList() {
+            $('#cc').combo({
+                required:true,
+                editable:false
+            });
+            $('#sp').appendTo($('#cc').combo('panel'));
+            $('#sp input').click(function(){
+                var v = $(this).val();
+                var s = $(this).next('span').text();
+                $('#cc').combo('setValue', v).combo('setText', s).combo('hidePanel');
+            });
+        }
+
+	//提交判断
+	function submitData(){
+		$("#fm").form("submit",{
+			url:"/admin/film/save",
+			onSubmit:function(){
+				var content=CKEDITOR.instances.content.getData();
+				if(content==""){
+					$.messager.alert("系统提示","内容不能为空！");
+					return false;
+				}
+				return $(this).form("validate");
+			},
+			success:function(result){
+			    console.log(result);
+				var result=eval("("+result+")");
+				console.log(result)
+				if(result.success){
+					$.messager.alert("系统提示","保存成功！");
+					resetValue();
+				}else{
+					$.messager.alert("系统提示","保存失败！");
+				}
+				
+			}
+		});
+	}
+
+	//提交成功重置文本框
+	function resetValue(){
+		$("#name").val("");
+		$("#catId").val("");
+		$("#imageFile").val("");
+		$("#url").prop("checked",true);
+		CKEDITOR.instances.content.setData("");
+	}
+</script>
+</head>
+<body style="margin: 10px">
+<div id="p" class="easyui-panel" title="添加视频" style="padding: 10px">
+	<form id="fm" method="post" enctype="multipart/form-data">
+		<table cellspacing="20px">
+			<tr>
+				<td width="80px">视频名称：</td>
+				<td>
+					<input type="text" id="name" name="name" style="width: 400px" class="easyui-validatebox" required="true"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="80px">分类：</td>
+				<td>
+
+					<!--//<input type="text" id="title" name="title" style="width: 400px" class="easyui-validatebox" required="true"/>-->
+					<select id="cc"  name="catId" style="width:150px"></select>
+
+				<!--//	easy 选择列表-->
+					<div id="sp">
+						<div style="color:#99BBE8;background:#fafafa;padding:5px;">选择视频归属类名</div>
+
+						<div  style="padding:10px" id="op">
+							<!--th:each="name:${application.names}"-->
+
+
+						</div>
+					</div>
+					<!--<select name="catId">
+						<option  name="catId" value="1">Java基础第一季</option>
+						<option  name="catId" value="2">Java基础第二季</option>
+						<option  name="catId" value="3">Java基础第三季</option>
+						<option  name="catId" value="4">Java基础第四季</option>
+
+					</select>-->
+				</td>
+			</tr>
+			<tr>
+				<td width="80px">封面图片：</td>
+				<td>
+					<input type="file" id="imageFile" name="imageFile" />
+				</td>
+			</tr>
+			<tr>
+				<td width="80px">视频url：</td>
+				<td>
+					<input type="text" id="url" name="url" style="width: 400px" class="easyui-validatebox" required="true"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td valign="top">简介：</td>
+				<td>
+					<textarea id="content" name="content" rows="30" cols="80"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<a href="javascript:submitData()" class="easyui-linkbutton" data-options="iconCls:'icon-submit'">保存</a>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+	CKEDITOR.replace("content");
+</script>
+</body>
+</html>
